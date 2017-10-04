@@ -24,16 +24,16 @@ else {
 }
 
 
-var rpl:ReversePolishNotation = ReversePolishNotation(from: raw_term)
+var rpn:ReversePolishNotation = ReversePolishNotation(from: raw_term)
 
-rpl.display_infix()
-
-print( "" )
-
-rpl.display_postfix()
+rpn.display_infix()
 
 print( "" )
 
-print( "Result: \(rpl.show_result())" )
+rpn.display_postfix()
+
+print( "" )
+
+print( "Result: \(rpn.show_result())" )
 
 print( "" )
