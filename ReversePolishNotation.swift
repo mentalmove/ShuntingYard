@@ -68,6 +68,13 @@ class ReversePolishNotation {
 			}
 			
 			if char == "(" || char == ")" {
+				if actual_token_type == "number" && tokens[tokens.count - 2].stringed_number == "-" {
+					tokens[tokens.count - 2].stringed_number.append("1")
+					tokens[tokens.count - 1].token_type = "operator"
+					tokens[tokens.count - 1].op = "*"
+					number_counter -= 1
+					tokens.append( Token() )
+				}
 				tokens[tokens.count - 1].token_type = String(char)
 				tokens[tokens.count - 1].op = char
 				bracket_counter += (char == "(") ? 1 : -1
@@ -76,7 +83,7 @@ class ReversePolishNotation {
 				}
 			}
 		}
-		
+
 		if ( number_counter != 1 ) {
 			return [Token]()
 		}
