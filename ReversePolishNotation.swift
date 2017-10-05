@@ -68,7 +68,7 @@ class ReversePolishNotation {
 			}
 			
 			if char == "(" || char == ")" {
-				if actual_token_type == "number" && tokens[tokens.count - 2].stringed_number == "-" {
+				if actual_token_type == "number" && char == "(" && tokens[tokens.count - 2].stringed_number == "-" {
 					tokens[tokens.count - 2].stringed_number.append("1")
 					tokens[tokens.count - 1].token_type = "operator"
 					tokens[tokens.count - 1].op = "*"
