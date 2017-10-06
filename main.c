@@ -21,9 +21,7 @@ struct token {
 	char *stringed_number;
 	uint stringed_number_counter;
 	double numeric_value;
-	
 	struct token *next;
-	struct token *previous;
 };
 
 
@@ -34,6 +32,7 @@ struct token* to_tokens(char*);
 uint operator_precedence(char);
 struct token* shunting_yard(struct token*);
 double make_calculation(double, double, char);
+struct token* reverse_list(struct token*, struct token*);
 struct token* calculate_polish(struct token*);
 
 void display_infix(struct token*);
@@ -95,7 +94,6 @@ void generate_new_token (struct token** first, struct token** last) {
 	tmp->stringed_number_counter = 0;
 	tmp->numeric_value = 0.0;
 	tmp->next = NULL;
-	tmp->previous = NULL;
 	
 	if ( *first ) {
 		(*last)->next = tmp;
@@ -194,7 +192,7 @@ struct token* to_tokens (char *term) {
 		}
 	}
 	
-	if ( number_counter < 0 || !last_number ) {
+	if ( number_counter != 1 ) {
 		delete_tokens(&first);
 		generate_new_token(&first, &last);
 		return first;
@@ -331,41 +329,49 @@ double make_calculation (double first, double second, char op) {
 			return (first / second);
 	}
 }
+struct token* reverse_list (struct token* previous, struct token* element) {
+	struct token *next = element->next;
+	element->next = previous;
+	if ( !next )
+		return element;
+	return reverse_list(element, next);
+}
 struct token* calculate_polish (struct token* calculated) {
 	
+	if ( !calculated || !calculated->next || !calculated->next->next )
+		return calculated;
+	
+	struct token *reversed, *tmp, *remaining;
 	struct token *first, *second, *op;
 	
-	first = calculated;
-	if ( !first || !first->next )
-		return calculated;
-	second = calculated->next;
-	op = second->next;
-	
-	while ( calculated->next ) {
-		if ( second->token_type != 'n' ) {
-			if ( !first->previous )
-				return calculated;
-			first = first->previous;
-			second = first->next;
-			op = second->next;
-		}
-		else {
-			while ( op->token_type != 'o' ) {
-				second->previous = first;
-				first = second;
-				second = op;
-				op = op->next;
-			}
-		}
-		first->numeric_value = make_calculation(first->numeric_value, second->numeric_value, op->op);
-		first->next = op->next;
-		free(second);
-		free(op);
-		second = first->next;
-		if ( second )
-			op = second->next;
+	tmp = calculated;
+	remaining = tmp->next;
+	while ( tmp && tmp->token_type != 'o' ) {
+		tmp = remaining;
+		remaining = remaining->next;
 	}
-
+	
+	tmp->next = NULL;
+	reversed = reverse_list(NULL, calculated);
+	
+	while ( reversed->next ) {
+		op = reversed;
+		second = reversed->next;
+		first = second->next;
+		first->numeric_value = make_calculation(first->numeric_value, second->numeric_value, op->op);
+		reversed = first;
+		free(op);
+		free(second);
+		while ( remaining ) {
+			tmp = remaining;
+			remaining = remaining->next;
+			tmp->next = reversed;
+			reversed = tmp;
+			if ( tmp->token_type == 'o' )
+				break;
+		}
+	}
+	
 	return calculated;
 }
 
