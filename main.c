@@ -10,7 +10,7 @@
 #include <stdlib.h>
 #include <math.h>
 
-#define MAX_TERM_LENGTH 2048
+#define MAX_TERM_LENGTH 16384
 
 typedef unsigned int uint;
 
@@ -23,6 +23,7 @@ struct token {
 	double numeric_value;
 	
 	struct token *next;
+	struct token *previous;
 };
 
 
@@ -94,6 +95,7 @@ void generate_new_token (struct token** first, struct token** last) {
 	tmp->stringed_number_counter = 0;
 	tmp->numeric_value = 0.0;
 	tmp->next = NULL;
+	tmp->previous = NULL;
 	
 	if ( *first ) {
 		(*last)->next = tmp;
@@ -108,6 +110,8 @@ struct token* to_tokens (char *term) {
 	
 	struct token *first = NULL;
 	struct token *last = NULL;
+	
+	struct token *last_number = NULL;
 	
 	int bracket_counter = 0;
 	int number_counter = 0;
@@ -126,6 +130,10 @@ struct token* to_tokens (char *term) {
 			
 			if ( actual_token_type != 'n' ) {
 				generate_new_token(&first, &last);
+				/**
+				 * To be remembered in case there is a minus in front of an open bracket
+				 */
+				last_number = last;
 				number_counter++;
 				if ( number_counter != 1 ) {
 					delete_tokens(&first);
@@ -159,15 +167,16 @@ struct token* to_tokens (char *term) {
 		}
 		
 		if ( term[i] == '(' || term[i] == ')' ) {
-			if ( actual_token_type == 'n' && term[i] == '(' ) {
-				tmp = first;
-				while ( tmp->next && tmp->next != last )
-					tmp = tmp->next;
-				if ( tmp->token_type == 'n' && tmp->stringed_number_counter == 1 && tmp->stringed_number[0] == '-' ) {
-					tmp->stringed_number_counter++;
-					tmp->stringed_number = realloc(tmp->stringed_number, 3 * sizeof(char));
-					tmp->stringed_number[1] = '1';
-					tmp->stringed_number[2] = '\0';
+			/**
+			 * minus in front of an open bracket:
+			 * Replacing '-' with '-1 *'
+			 */
+			if ( actual_token_type == 'n' && term[i] == '(' && last_number ) {
+				if ( last_number->stringed_number_counter == 1 && last_number->stringed_number[0] == '-' ) {
+					last_number->stringed_number_counter++;
+					last_number->stringed_number = realloc(last_number->stringed_number, 3 * sizeof(char));
+					last_number->stringed_number[1] = '1';
+					last_number->stringed_number[2] = '\0';
 					last->op = '*';
 					last->token_type = 'o';
 					number_counter--;
@@ -183,6 +192,12 @@ struct token* to_tokens (char *term) {
 				return first;
 			}
 		}
+	}
+	
+	if ( number_counter < 0 || !last_number ) {
+		delete_tokens(&first);
+		generate_new_token(&first, &last);
+		return first;
 	}
 	
 	if ( bracket_counter != 0 ) {
@@ -321,19 +336,26 @@ struct token* calculate_polish (struct token* calculated) {
 	struct token *first, *second, *op;
 	
 	first = calculated;
+	if ( !first || !first->next )
+		return calculated;
 	second = calculated->next;
 	op = second->next;
 	
 	while ( calculated->next ) {
 		if ( second->token_type != 'n' ) {
-			first = calculated;
+			if ( !first->previous )
+				return calculated;
+			first = first->previous;
 			second = first->next;
 			op = second->next;
 		}
-		while ( op->token_type != 'o' ) {
-			first = second;
-			second = op;
-			op = op->next;
+		else {
+			while ( op->token_type != 'o' ) {
+				second->previous = first;
+				first = second;
+				second = op;
+				op = op->next;
+			}
 		}
 		first->numeric_value = make_calculation(first->numeric_value, second->numeric_value, op->op);
 		first->next = op->next;
@@ -343,7 +365,7 @@ struct token* calculate_polish (struct token* calculated) {
 		if ( second )
 			op = second->next;
 	}
-	
+
 	return calculated;
 }
 
