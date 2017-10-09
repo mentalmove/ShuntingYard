@@ -28,7 +28,7 @@ void ShuntingYardHelper::pushOperator (char op) {
 			operators.pop_back();
 			break;
 		default:
-			while ( operators.size() && operators.back() != '(' && operators.back() != ')' && precedence(operators.back()) >= precedence(op) ) {
+			while ( operators.size() && precedence(operators.back()) >= precedence(op) ) {
 				calculate(operators.back());
 				operators.pop_back();
 			}
