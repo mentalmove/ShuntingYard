@@ -88,7 +88,7 @@ with any given term, the above question is answered.
 
 [Edsger W. Dijkstra](https://en.wikipedia.org/wiki/Edsger_W._Dijkstra)
 invented such an algorithm and called it _Shunting Yard_. Since Dijkstra
-was not only programmer but also mathmatican and logican, the method's
+was not only programmer but also mathmatican and logician, the method's
 practical purpose is not self-evident.
 
 The costs for executing a term written in infix notation directly
