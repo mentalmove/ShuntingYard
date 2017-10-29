@@ -2,19 +2,32 @@ class String
   def tokenize
     tokens = []
     term = self.gsub /\s/, ""
-    replacements = { /^\-\(/ => "m1*(", /^\-/ => "m",
+    replacements = { /\-([\d\.]+\^)/ => '-1*\1', /^\-\(/ => "m1*(", /^\-/ => "m",
        /([+\-\*\/\(])(\-)(\d)/ => '\1m\3', /([+\-\*\/\(])(\-\()/ => '\1m1*(' }
     replacements.each { |pattern, replacement| term.gsub!(pattern, replacement) }
-    term.scan(Regexp.union(/m?[\d\.]+/, /[\(\)+\-\*\/]/)).each { |match| tokens << (match.gsub /m/, "-") }
+    term.scan(Regexp.union(/m?[\d\.]+/, /[\(\)+\-\*\/\^]/)).each { |match| tokens << (match.gsub /m/, "-") }
     tokens
   end
   def shunting_yard
-    precedence = {
-      "+" => 2,
-      "-" => 2,
-      "*" => 3,
-      "/" => 3
-    }
+    def precedence x, y = nil
+      collection = {
+        "+" => 2,
+        "-" => 2,
+        "*" => 3,
+        "/" => 3,
+        "^" => 4
+      }
+      right_associative = {
+        "^" => true
+      }
+      if !y
+        return collection[x]
+      end
+      if right_associative[x]
+        return collection[x] > collection[y]
+      end
+      collection[x] >= collection[y]
+    end
     output = []
     operators = []
     tokens = tokenize
@@ -26,8 +39,8 @@ class String
           output << operators.pop
         end
         operators.pop
-      elsif precedence.has_key? token
-        while !operators.empty? && precedence[operators.last] && precedence[operators.last] >= precedence[token]
+      elsif precedence token
+        while !operators.empty? && precedence(operators.last) && precedence(operators.last, token)
           output << operators.pop
         end
         operators << token
@@ -56,6 +69,8 @@ class String
             result = output[-2].to_f - output[-1]
           elsif item == "*"
             result = output[-2].to_f * output[-1]
+          elsif item == "^"
+            result = output[-2].to_f ** output[-1]
           elsif output[-1] != 0
             result = output[-2].to_f / output[-1]
           end
@@ -77,6 +92,10 @@ s = ""
 ARGV.each do |argument|
   s += argument
 end
+
+# Exponent example
+# s = "(((6 * 2^7 - -2^2^3)^(1 / 2) - 3^(2^2 - 1) + (1.5^2 - 1))^(1 / 2) * (7^2 + 7^0) - 61)^(1 / 2) + 2 * 17"
+
 if s == ""
   s = gets
 end
