@@ -78,7 +78,7 @@ ARGV.each do |argument|
   s += argument
 end
 if s == ""
-  s = gets.chomp
+  s = gets
 end
 
 puts s.shunting_yard.join(" ")
