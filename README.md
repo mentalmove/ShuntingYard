@@ -9,6 +9,7 @@ is implemented in different languages here; these are
 - [C++](https://github.com/mentalmove/ShuntingYard/tree/C++)
 - [Javascript](https://github.com/mentalmove/ShuntingYard/tree/Javascript)
 - [PHP](https://github.com/mentalmove/ShuntingYard/tree/PHP)
+- [Ruby](https://github.com/mentalmove/ShuntingYard/tree/Ruby)
 - [Swift](https://github.com/mentalmove/ShuntingYard/tree/Swift)
 
 Although the underlying algorithmic principle is always the same,
@@ -21,6 +22,11 @@ especially in questions related to memory management.
 - **Javascript** is a completely dynamic language, having functions being so-called _First Class Citizens_.
 - **PHP** is a typeless language (there is at least no general distinction between numbers and strings)
 with an emphasis on collection based operations.
+- **Ruby** is an _Object Oriented Language_. This is much more than
+_A language supporting Object Oriented Programming_; in Ruby,
+so-called primitive types, the values of primitive types
+or even classes are objects. As a result, the Ruby application's code
+is the shortest in this collection.
 - **Swift**, even though the youngest in this formation, is quite conservative
 and extremely typesafe.
 
@@ -102,18 +108,3 @@ linearly growing costs. The Shunting Yard Algorithm itself also has
 linearly growing costs. Therefore, for longer terms (where the base
 costs do not have to be taken into consideration), execution will
 benefit of transforming traditionally written terms into _Reverse Polish Notation_.
-
-&nbsp;
-
-# Shunting Yard Algorithm
-
-The algorithm needs two collections of elements, each realised as _stack_.  
-The word 'stack' has nothing to do with memory storage here -
-it just defines the promise to access only the last element.
-Stacks allow two operations:
-- **push** appends a new element to the stack
--  **pop** removes the last element and provides it
-
-The collections shall be name OUTPUT and OPERATORS;
-the former is a very simple stack because it only will use _push_ and never _pop_.
-It is unimportant if the collections are implemented as arrays or lists.
