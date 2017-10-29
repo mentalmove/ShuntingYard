@@ -59,6 +59,7 @@ Extended to a complete algorithm for term execution, this is
 While term still has more than one element
     Replace most left operator with result of calculation [position - 2] [operator] [position - 1]
     Delete both used numbers
+Result is remaining number
 ```
 
 The above example would be written as
@@ -101,3 +102,18 @@ linearly growing costs. The Shunting Yard Algorithm itself also has
 linearly growing costs. Therefore, for longer terms (where the base
 costs do not have to be taken into consideration), execution will
 benefit of transforming traditionally written terms into _Reverse Polish Notation_.
+
+&nbsp;
+
+# Shunting Yard Algorithm
+
+The algorithm needs two collections of elements, each realised as _stack_.  
+The word 'stack' has nothing to do with memory storage here -
+it just defines the promise to access only the last element.
+Stacks allow two operations:
+- **push** appends a new element to the stack
+-  **pop** removes the last element and provides it
+
+The collections shall be name OUTPUT and OPERATORS;
+the former is a very simple stack because it only will use _push_ and never _pop_.
+It is unimportant if the collections are implemented as arrays or lists.
