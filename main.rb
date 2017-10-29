@@ -1,7 +1,7 @@
 class String
   def tokenize
     tokens = []
-	term = self.gsub /\s/, ""
+    term = self.gsub /\s/, ""
     replacements = { /^\-\(/ => "m1*(", /^\-/ => "m",
        /([+\-\*\/\(])(\-)(\d)/ => '\1m\3', /([+\-\*\/\(])(\-\()/ => '\1m1*(' }
     replacements.each { |pattern, replacement| term.gsub!(pattern, replacement) }
