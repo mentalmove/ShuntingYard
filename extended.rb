@@ -62,19 +62,13 @@ class String
         output << item
       else
         if output.length > 1
-          result = 0
-          if item == "+"
-            result = output[-2].to_f + output[-1]
-          elsif item == "-"
-            result = output[-2].to_f - output[-1]
-          elsif item == "*"
-            result = output[-2].to_f * output[-1]
+          if item == "/" && output[-1] == 0
+            output[-2] = 0
           elsif item == "^"
-            result = output[-2].to_f ** output[-1]
-          elsif output[-1] != 0
-            result = output[-2].to_f / output[-1]
+            output[-2] = output[-2].to_f ** output[-1]
+          else
+            output[-2] = output[-2].to_f.send item, output[-1]
           end
-          output[-2] = result
           output.pop
         end
       end
