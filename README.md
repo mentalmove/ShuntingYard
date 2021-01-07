@@ -7,6 +7,7 @@ is implemented in different languages here; these are
 
 - [C](https://github.com/mentalmove/ShuntingYard/tree/C)
 - [C++](https://github.com/mentalmove/ShuntingYard/tree/C++)
+- [Java](https://github.com/mentalmove/ShuntingYard/tree/Java)
 - [Javascript](https://github.com/mentalmove/ShuntingYard/tree/Javascript)
 - [PHP](https://github.com/mentalmove/ShuntingYard/tree/PHP)
 - [Ruby](https://github.com/mentalmove/ShuntingYard/tree/Ruby)
