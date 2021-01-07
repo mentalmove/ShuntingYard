@@ -14,7 +14,7 @@ public class Yard {
 
     public Yard (String term) {
         
-        Output.verbosity = Output.VerbosityMode.VERBOSE;
+        // Output.verbosity = Output.VerbosityMode.VERBOSE;
         
         TokenList tokenList = TokenList.getInstance();
         
