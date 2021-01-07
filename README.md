@@ -20,6 +20,7 @@ of each language, namely
 - **C** has a small set of commands, provides direct access to memory addresses and can therefore be very fast.
 - **C++** has (more or less) the same features as _C_, but simplifies the developer's work,
 especially in questions related to memory management.
+- **Java** To cite a friend: *From the perspective of Java, the developer is a virus from whom the code must be protected.* - Consider it funny
 - **Javascript** is a completely dynamic language, having functions being so-called _First Class Citizens_.
 - **PHP** is a typeless language (there is at least no general distinction between numbers and strings)
 with an emphasis on collection based operations.
