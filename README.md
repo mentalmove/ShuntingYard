@@ -11,7 +11,7 @@ Create file `manifest.txt` with content
 Main-Class: yard.Yard
 
 ```
-(New line at end is mandatory)
+(New line in the end is mandatory)
 
 ```
 jar cfm ShuntingYard.jar manifest.txt *
