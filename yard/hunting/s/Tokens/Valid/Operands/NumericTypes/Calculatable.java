@@ -13,7 +13,7 @@ abstract public class Calculatable extends NumericValue {
     protected void setValue (double value) {}
     
     private Calculatable executeCalculation (double result) {
-        int truncated = (int) result;
+        long truncated = (long) result;
         if ( result == truncated ) {
             if ( this instanceof CalculatableFloatingPointValue ) {
                 return new CalculatableIntegerValue((long) result);
