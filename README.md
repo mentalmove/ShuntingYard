@@ -23,9 +23,9 @@ jar cfm ShuntingYard.jar manifest.txt *
 ```
 java -jar ShuntingYard.jar
 ```
-or
+OR
 ```
-java -jar ShuntingYard.jar '2 + 3 * 4'
+java -jar ShuntingYard.jar '2 + 3 * 4 or whatever'
 ```
 
 
