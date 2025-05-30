@@ -7,6 +7,7 @@ is implemented in different languages here; these are
 
 - [C](https://github.com/mentalmove/ShuntingYard/tree/C)
 - [C++](https://github.com/mentalmove/ShuntingYard/tree/C++)
+- [Go](https://github.com/mentalmove/ShuntingYard/tree/Go)
 - [Java](https://github.com/mentalmove/ShuntingYard/tree/Java)
 - [Javascript](https://github.com/mentalmove/ShuntingYard/tree/Javascript)
 - [PHP](https://github.com/mentalmove/ShuntingYard/tree/PHP)
@@ -20,6 +21,7 @@ of each language, namely
 - **C** has a small set of commands, provides direct access to memory addresses and can therefore be very fast.
 - **C++** has (more or less) the same features as _C_, but simplifies the developer's work,
 especially in questions related to memory management.
+- **Go** could be described as _Modern C_. Some _C_ features like pointer arithmetic are missing; instead, a lot of properties that are more likely to be found in interpreted languages are integrated. Interestingly, _Go_ supports _Object Oriented Programming_ but has no equivalent to classes.
 - **Java** To cite a friend: *From the perspective of Java,
 the developer is a virus from whom the code must be protected.* - Consider it funny
 - **Javascript** is a completely dynamic language, having functions being so-called _First Class Citizens_.
