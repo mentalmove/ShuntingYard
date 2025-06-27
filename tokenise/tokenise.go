@@ -12,6 +12,17 @@ type Token struct {
 	Literal string
 }
 
+type GeneralToken interface {
+	GetNumeric() float64
+	GetLiteral() string
+}
+func (t Token) GetNumeric () float64 {
+	return t.Numeric
+}
+func (t Token) GetLiteral () string {
+	return t.Literal
+}
+
 func Validate (tokens []Token) bool {
 	brackets := 0
 	operators := 0

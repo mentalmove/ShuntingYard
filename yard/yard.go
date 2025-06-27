@@ -8,7 +8,7 @@ import (
 	"yard/shunting"
 )
 
-func listTokens (tokens []tokenise.Token, title ...string) {
+func listTokens [T tokenise.GeneralToken] (tokens []T, title ...string) {
 	fmt.Println( "" )
 
 	if len(title) > 0 {
@@ -16,13 +16,13 @@ func listTokens (tokens []tokenise.Token, title ...string) {
 	}
 	
 	for i := 0; i < len(tokens); i++ {
-		if i != 0 && tokens[i - 1].Literal != "(" && tokens[i].Literal != ")" {
+		if i != 0 && tokens[i - 1].GetLiteral() != "(" && tokens[i].GetLiteral() != ")" {
 			fmt.Print( " " )
 		}
-		if tokens[i].Literal != "" {
-			fmt.Print( tokens[i].Literal )
+		if tokens[i].GetLiteral() != "" {
+			fmt.Print( tokens[i].GetLiteral() )
 		} else {
-			fmt.Print( tokens[i].Numeric )
+			fmt.Print( tokens[i].GetNumeric() )
 		}
 	}
 	fmt.Println( "" )
@@ -61,11 +61,11 @@ func main() {
 		return
 	}
 	
-	postfix := shunting.Apply(infix)
-	if len(postfix) == 0 {
+	shunting.Apply(infix)
+	if len(shunting.Output) == 0 {
 		return
 	}
-	listTokens(postfix, "Postfix:")
+	listTokens(shunting.Output, "Postfix:")
 
 	fmt.Println( "" )
 	fmt.Printf( "Result: %v", shunting.Calculate() )
